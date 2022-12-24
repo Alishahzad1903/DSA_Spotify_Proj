@@ -1,66 +1,46 @@
-#ifndef TRACKHASHTABLEHEADER
-#define TRACKHASHTABLEHEADER
-#include <iostream>
-#include <string>
+#pragma once
 #include "Track.h"
-using namespace std;
+#include "ArtistHashTable.h"
+class TrackNode
+{
+public:
+    Track *TrackPointer;
+    TrackNode *next;
+    TrackNode();
+    TrackNode(std::string *array, ArtistHashTable *);
+};
 
-// THIS FILE WILL HANDLE THE REQUEST DIRECTLY FROM PARSER FUNCTION
-// IF TRACK IS FOUND THEN IT WILL ADD THE GENRE / PLAYLIST (WHICH WILL BE IMPLEMENTED LATER ON) USING TRACK.H
-// IF TRACK IS NOT FOUND THEN IT WILL CALL TRACK.h FILE
+class LinkedList
+{
+public:
+    TrackNode *head;
+    int collisions;
+    LinkedList();
+    LinkedList(std::string *, ArtistHashTable *);
 
+    void addTrackInList(std::string *, ArtistHashTable *);
+
+    bool findInList(std::string);
+    void displayAll();
+
+    void deleteNode(std::string);
+};
 class TrackHashTable
 {
 public:
     int tablesize;
-    Track **trackarray;
+    LinkedList **hashTableArr;
 
-    TrackHashTable()
-    {
-        tablesize = 100000;
-        trackarray = new Track *[tablesize];
-    }
+    TrackHashTable(int);
 
-    ~TrackHashTable()
-    {
-        for (int i = 0; i < tablesize; i++)
-        {
-            Track *temp = trackarray[i];
-            delete temp;
-        }
-        delete[] trackarray;
-    }
-    bool isAvailable(int ExistOn)
-    {
-        // IF ARRAY CONTAINS POINTER = TRUE
-        // IN THE ABOVE CASE THIS FUNCTION WILL RETURN FALSE BECAUSE SPACE IS NOT FREE
+    ~TrackHashTable();
 
-        // IF ARRAY DOESN'T CONTAINS POINTER = FALSE
-        // IN THE ABOVE CASE THIS FUNCTION WILL RETURN TRUE BECAUSE SPACE IS FREE
-        return (!(trackarray[ExistOn]));
-    }
+    bool isAvailable(int);
 
-    int hashFunction(string s)
-    {
-        int sum = 0;
-        for (int i = 0; i < s.length(); i++)
-        {
-            sum += (int)s[i];
-        }
-        // SUM TO BE MULTIPLIED BY PRIME NUMBER
-        return (sum % tablesize);
-    }
+    int computePower(int, int);
+    int hashFunction(std::string);
 
-    void hashStore(Track *s)
-    {
-        int key = hashFunction(s->Title);
-        if (isAvailable(key))
-        {
-            trackarray[key] = s;
-        }
-    }
-    void handler(string arr[])
-    {
-    }
+    void hashStore(std::string *, ArtistHashTable *);
+
+    void handler(std::string *, int, ArtistHashTable *);
 };
-#endif // TRACKHASHTABLEHEADER

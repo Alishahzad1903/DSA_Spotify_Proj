@@ -1,83 +1,16 @@
-#ifndef ARTISTHEADER
-#define ARTISTHEADER
-#include "AVLTREE.h"
-
-#include <iostream>
-#include <string>
-#include "Track.h"
-using namespace std;
-
-// IF ARTIST IS NOT FOUND
-// ARTIST HASH TABLE WILL CALL THIS FILE AND WILL MAKE AN ARTIST OBJECT
-// IF FOUND
-// ARTIST HASH TABLE WILL CALL THIS FOR ADDING THE TRACK TO THAT ARTIST NAME
-class ArtistSong
-{
-public:
-    Track *TrackInfo;
-    ArtistSong *NextArtistTrack;
-    ArtistSong(Track *toBeSave)
-    {
-        TrackInfo = toBeSave;
-        NextArtistTrack = NULL;
-    }
-};
-class ListingArtistSongs
-{
-public:
-    ArtistSong *HeadTrack;
-    ArtistSong *NxtToBeSaved;
-    ListingArtistSongs(Track *toBeSave)
-    {
-        HeadTrack = new ArtistSong(toBeSave);
-        NxtToBeSaved = NULL;
-    }
-    void addTrack(Track *toBeSave)
-    {
-        if (!TrackCheck(toBeSave))
-        {
-            // NxtToBeSaved WILL BE ON THAT ARTISTNODE NXT TO WHICH SONG NEEDS TO BE ADDED
-            NxtToBeSaved->NextArtistTrack = new ArtistSong(toBeSave);
-        }
-        NxtToBeSaved = NULL;
-    }
-    bool TrackCheck(Track *toBeSave)
-    {
-        NxtToBeSaved = HeadTrack;
-        while (NxtToBeSaved->NextArtistTrack != NULL)
-        {
-            // CHECK FOR DUPLICATION CUZ SONGS ARE IN DIFFERENT PLAYLISTS
-            if (toBeSave->Title == NxtToBeSaved->TrackInfo->Title)
-            {
-                // IF FOUND THEN TRUE
-
-                return true;
-            }
-        }
-        // FALSE ELSEWISE
-        return false;
-    }
-};
+#pragma once
+#include "../Template/LinkedList.h"
+class Track;
 
 class Artist
 {
 public:
-    string name;
-    ListingArtistSongs *SongsList;
+    std::string name;
+    // ListingArtistSongs *SongsList;
+    LinkedList_<Track> *SongsList;
     // FROM NXT NODE WE WILL SEE ALL THE TRACKS
-    Artist()
-    {
-        SongsList = NULL;
-    }
-    Artist(string name)
-    {
-        this->name = name;
-        SongsList = NULL;
-    }
-    Artist()
-    {
-        this->name = "";
-        SongsList = NULL;
-    }
+    Artist();
+    Artist(std::string);
+    void trackHandler(Track *); // WILL BE CALLED BY ARTSITHASHTABLE FOR ADDING TRACK WHILE ITS CREATION
+    bool operator==(Artist test);
 };
-#endif // ARTISTHEADER

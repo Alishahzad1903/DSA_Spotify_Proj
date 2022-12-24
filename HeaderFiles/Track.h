@@ -1,30 +1,14 @@
-#ifndef TRACKHEADER
-#define TRACKHEADER
-
-#include <iostream>
-#include <string>
-// #include "Artist.h"
-using namespace std;
-
-// THIS FILE WILL BE CALLED IF TRACK IS BEING ADDED FOR THE VERY FIRST TIME
-// OR IF TRACK IS ALREADY IN TRACK HASH TABLE THEN GENRE/ PLAYLIST WILL BE THE REQUIRED THING
-
-// class ArtistsForTrack
-// {
-// public:
-//     Artist *ArtistName;
-//     ArtistsForTrack *NextArtist;
-//     ArtistsForTrack()
-//     {
-//         //
-//     }
-// };
+#pragma once
+#include "Artist.cpp"
+#include "../Template/LinkedList.h"
+// FORWARD DECLARATION
+class ArtistHashTable;
 
 class Track
 {
 public:
-    string Title;
-    // ArtistsForTrack *Artists;
+    std::string Title;
+    LinkedList_<Artist> *ArtistsOfTrack;
     // singlyNode<string> *Genre;
     // singlyNode<string> *Playlist;
     int Duration;
@@ -42,46 +26,8 @@ public:
     float Tempo;
     int TimeSignature;
 
-    Track()
-    {
-        Title = "";
-        Duration = 0;
-        Explicit = 0;
-        Dancebility = 0;
-        Energy = 0;
-        key = 0;
-        Loudness = 0;
-        Mode = 0;
-        Speechiness = 0;
-        Accousticness = 0;
-        Instrumental = 0;
-        Liveness = 0;
-        Valence = 0;
-        Tempo = 0;
-        TimeSignature = 0;
-    }
-
-    Track(string *array)
-    {
-        Title = array[4];
-        // Artists = NULL;
-        // Genre = NULL;
-        // Playlist = NULL;
-        Duration = stoi(array[6]);
-        Explicit = stoi(array[7]);
-        Dancebility = stof(array[8]);
-        Energy = stof(array[9]);
-        key = stoi(array[10]);
-        Loudness = stof(array[11]);
-        Mode = stoi(array[12]);
-        Speechiness = stof(array[13]);
-        Accousticness = stof(array[14]);
-        Instrumental = stof(array[15]);
-        Liveness = stof(array[16]);
-        Valence = stof(array[17]);
-        Tempo = stof(array[18]);
-        TimeSignature = stoi(array[19]);
-    }
+    Track();
+    Track(std::string *, ArtistHashTable *);
+    bool operator==(Track test);
+    void addArtistInList(string, ArtistHashTable *, Track *);
 };
-
-#endif // TRACKHEADER
